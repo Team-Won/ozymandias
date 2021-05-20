@@ -23,6 +23,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 615ecf9690cb51a43b2c4d777069d048, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AutumnTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,6 +55,10 @@ Material:
         m_Texture: {fileID: 2800000, guid: 615ecf9690cb51a43b2c4d777069d048, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HueShiftTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -67,12 +75,17 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SnowTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Wind:
         m_Texture: {fileID: 2800000, guid: 652c3d760a923ff4faa0821432c1df14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Amount: 0.5
+    - _Autumn: 0
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _Debug: 0
@@ -85,12 +98,15 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HueInfluence: 1
     - _Metallic: 0
     - _Mode: 0
+    - _NumBands: 3
     - _OcclusionStrength: 1
     - _Offset: -0.4
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
+    - _SnowCoverage: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Strength: 0.1
@@ -100,6 +116,10 @@ Material:
     - _WindStrength: 0.1
     - _ZWrite: 1
     m_Colors:
+    - _AutumnCol1: {r: 1, g: 1, b: 1, a: 1}
+    - _AutumnCol2: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 0.18236297, g: 0.35499996, b: 0.20910954, a: 1}
     - _Direction: {r: -1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _SnowCol: {r: 1, g: 1, b: 1, a: 1}
+  m_BuildTextureStacks: []

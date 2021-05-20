@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Tree
-  m_Shader: {fileID: 4800000, guid: 244aa3dff3bce224c83c9ccc2a1d4c7a, type: 3}
+  m_Shader: {fileID: 4800000, guid: 4c7d30bb08a96724795b861a19c626da, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
@@ -23,8 +23,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _AutumnTex:
+        m_Texture: {fileID: 2800000, guid: b9cb4384db173ab46a731371cc9f0625, type: 3}
+        m_Scale: {x: 0.003, y: 0.01}
+        m_Offset: {x: 0, y: 0}
     - _BumpMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Detail:
+        m_Texture: {fileID: 2800000, guid: 652c3d760a923ff4faa0821432c1df14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -43,8 +51,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _Global:
+        m_Texture: {fileID: 2800000, guid: 615ecf9690cb51a43b2c4d777069d048, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _HueShiftTex:
+        m_Texture: {fileID: 2800000, guid: b9cb4384db173ab46a731371cc9f0625, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: ea0286e6eed566042be2862481a3191f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -63,6 +79,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SnowTex:
+        m_Texture: {fileID: 2800000, guid: 0e235e0e249791c458fece16d3d53bc4, type: 3}
+        m_Scale: {x: 0.1, y: 0.1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -80,32 +100,43 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Autumn: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
+    - _Debug: 0
     - _DetailNormalMapScale: 1
+    - _DetailScale: 1
+    - _DetailSpeed: -0.5
     - _DistanceScale: 20
     - _DstBlend: 0
     - _FarLineWidth1: 0.05
+    - _GlobalScale: 500
+    - _GlobalSpeed: 10
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HueInfluence: 0.35
     - _MaskPower: 2
     - _MaskSub: 0
     - _Metallic: 0
     - _Mode: 0
     - _NearLineWidth1: 0.02
+    - _NumBands: 3
     - _OcclusionStrength: 1
+    - _Offset: -0.4
     - _Outline1: 0
     - _Parallax: 0.02
     - _RimOffset: 0.6
     - _RimPower: 0
     - _ShadowOffsetFloat: 0.5
     - _SmoothnessTextureChannel: 0
+    - _SnowCoverage: 0
     - _SpecLerpAmount: 0
     - _SpecularGloss: 0.2
     - _SpecularHighlights: 1
     - _SpecularIntensity: 0.2
     - _SrcBlend: 1
+    - _Strength: 0.1
     - _UVSec: 0
     - _WindSpeed: 0.25
     - _WindStrength: 0.01
@@ -116,10 +147,14 @@ Material:
     - _max: 1.12
     - _min: 1.1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _AutumnCol1: {r: 0.5471698, g: 0.23453969, b: 0.16776434, a: 1}
+    - _AutumnCol2: {r: 0.9622642, g: 0.70500183, b: 0.28595585, a: 1}
+    - _Color: {r: 0.18236294, g: 0.35499993, b: 0.20910951, a: 1}
+    - _Direction: {r: -1, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - _RimTint: {r: 0.0036044938, g: 0.5902472, b: 0.764151, a: 0}
+    - _SnowCol: {r: 1, g: 1, b: 1, a: 1}
     - _Spec_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Tint: {r: 0.62264144, g: 0.62264144, b: 0.62264144, a: 0}
   m_BuildTextureStacks: []

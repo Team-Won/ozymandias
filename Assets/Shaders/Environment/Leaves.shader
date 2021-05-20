@@ -19,6 +19,18 @@
 
 		[Toggle] _Debug ("Wind Debug", Float) = 1
 		_Direction ("Wind Direction", Vector) = (1, 1, 1, 1)
+		
+		_SnowCoverage ("Snow Coverage", Range(0.0, 1.0)) = 0.0
+    	_SnowTex ("Snow Texture", 2D) = "white" {}
+    	_SnowCol ("Snow Colour", Color) = (1, 1, 1, 1)
+    	
+    	_Autumn ("Autumn", Range(0.0, 1.0)) = 0.0
+    	_AutumnTex ("Autumn Texture", 2D) = "white" {}
+    	_HueShiftTex ("Hue Shift Texture", 2D) = "white" {}
+    	_HueInfluence ("Hue Influence", Range(0.0, 1.0)) = 0.3
+    	_AutumnCol1 ("Autumn Colour 1", Color) = (1, 1, 1, 1)
+    	_AutumnCol2 ("Autumn Colour 2", Color) = (1, 1, 1, 1)
+    	_NumBands ("Number of Colour Bands", Int) = 3
     }
 
     SubShader
@@ -31,15 +43,17 @@
         #pragma surface surf Standard fullforwardshadows vertex:vert addshadow
 
         // Use shader model 3.0 target, to get nicer looking lighting
-        #pragma target 3.0
+        #pragma target 4.0
 
         sampler2D _MainTex;
 
         struct Input
         {
             float2 uv_MainTex;
-			float2 detailUV;
-			float2 globalUV;
+        	float4 world_position;
+        	// float2 snow_uv;
+        	float4 autumn_uv;
+        	INTERNAL_DATA
         };
 
 		#define PI 3.141592653589793238462
@@ -62,22 +76,30 @@
 
 		float _Debug;
 
-        // Add instancing support for this shader. You need to check 'Enable Instancing' on materials that use the shader.
-        // See https://docs.unity3d.com/Manual/GPUInstancing.html for more information about instancing.
-        // #pragma instancing_options assumeuniformscaling
-        UNITY_INSTANCING_BUFFER_START(Props)
-            // put more per-instance properties here
-        UNITY_INSTANCING_BUFFER_END(Props)
+        float _SnowCoverage;
+        sampler2D _SnowTex;
+        float4 _SnowTex_ST;
+        float4 _SnowCol;
+
+        float _Autumn;
+        sampler2D _AutumnTex;
+        float4 _AutumnTex_ST;
+        sampler2D _HueShiftTex;
+        float4 _HueShiftTex_ST;
+        float _HueInfluence;
+        float4 _AutumnCol1;
+        float4 _AutumnCol2;
+        float _NumBands;
 		
-		float4 sampleWind(float2 detailUV, float2 globalUV)
+		float4 sample_wind(float2 detail_uv, float2 global_uv)
 		{
-			float3 detailSamp = tex2Dlod(_Detail, float4(detailUV, 0, 0)).rgb;
-			float globalSamp = saturate(tex2Dlod(_Global, float4(globalUV, 0, 0)).r + _Offset);
+			float3 detail_samp = tex2Dlod(_Detail, float4(detail_uv, 0, 0)).rgb;
+			float global_samp = saturate(tex2Dlod(_Global, float4(global_uv, 0, 0)).r + _Offset);
 			
-			return float4(detailSamp, globalSamp);
+			return float4(detail_samp, global_samp);
 		}
 
-		float3x3 AngleAxis3x3(float angle, float3 axis)
+		float3x3 angle_axis(float angle, float3 axis)
 		{
 			float c, s;
 			sincos(angle, s, c);
@@ -101,47 +123,32 @@
 
 		void vert (inout appdata_full v, out Input o)
 		{
-			float2 direction = normalize(float2(_Direction.x, _Direction.z));
-			float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+			const float2 direction = normalize(float2(_Direction.x, _Direction.z));
+			float4 world_pos = mul(unity_ObjectToWorld, v.vertex);
+			const float4 origin_world = mul(unity_ObjectToWorld, float4(0, 0, 0, 1));
 
-			float2 detailUV = (float2(worldPos.x, worldPos.z) + direction * _Time[1] * _DetailSpeed) / _DetailScale;
-			float2 globalUV = (float2(worldPos.x, worldPos.z) + direction * _Time[1] * _GlobalSpeed) / _GlobalScale;
+			const float2 detail_uv = (float2(world_pos.x, world_pos.z) + direction * _Time[1] * _DetailSpeed) / _DetailScale;
+			const float2 global_uv = (float2(world_pos.x, world_pos.z) + direction * _Time[1] * _GlobalSpeed) / _GlobalScale;
 
-			float4 windSamp = sampleWind(detailUV, globalUV);
-			worldPos.xyz += windSamp.rgb * windSamp.a * _Strength;
-
-			v.vertex = mul(unity_WorldToObject, worldPos);
-			/*
-			float random = rand(mul(unity_ObjectToWorld, float4(0, 0, 0, 1)));
-
-			float3 bendAxis = normalize(cross(normalize(mul(unity_WorldToObject, float4(0, 1, 0, 0))), _Direction));
-
-			float3x3 pivot = AngleAxis3x3(lerp(0, 2 * PI, random), float4(0, 1, 0, 0));
-			bendAxis = mul(pivot, bendAxis);
-
-			float frequency = 20;
-			float angle = (.1 * PI / 180) * length(v.vertex) * sin((_Time[1] + random) * frequency) * windSamp.a;
-
-			float3x3 rotation = AngleAxis3x3(angle, bendAxis);
-
-			float3 worldObjectOrigin = mul(unity_ObjectToWorld, float4(0, 0, 0, 0)).xyz;
-			worldPos.xyz = mul(rotation, worldPos.xyz - worldObjectOrigin) + worldObjectOrigin;
-			*/
-			v.vertex = mul(unity_WorldToObject, worldPos);
+			const float4 wind_samp = sample_wind(detail_uv, global_uv);
+			world_pos.xyz += wind_samp.rgb * wind_samp.a * _Strength;
+			v.vertex = mul(unity_WorldToObject, world_pos);
 			
 			UNITY_INITIALIZE_OUTPUT(Input, o);
-			o.detailUV = detailUV;
-			o.globalUV = globalUV;
+			o.world_position = world_pos;
+			// o.snow_uv = TRANSFORM_TEX(world_pos.xz, _SnowTex);
+			o.autumn_uv = float4(TRANSFORM_TEX(origin_world.xz, _AutumnTex), TRANSFORM_TEX(origin_world.xz, _HueShiftTex));
 		}
 
         void surf (Input IN, inout SurfaceOutputStandard o)
         {
             // Albedo comes from a texture tinted by color
-            fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
-			
-			fixed4 windSample = sampleWind(IN.detailUV, IN.globalUV);
-			fixed3 debug = windSample.rgb * windSample.a;
-            o.Albedo = lerp(c.rgb, debug, _Debug);
+            const fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
+			// const fixed snow_samp = smoothstep(0.3, 0.35, tex2D(_SnowTex, IN.snow_uv).r);
+			const fixed autumn_samp = round(tex2D(_AutumnTex, IN.autumn_uv.xy).r * _NumBands) / _NumBands;
+			const fixed hue_samp = tex2D(_HueShiftTex, IN.autumn_uv.zw).r * 2 - 1;
+			const fixed3 autumn_c = lerp(_AutumnCol1, _AutumnCol2, saturate(autumn_samp + hue_samp * _HueInfluence)).rgb;
+            o.Albedo = lerp(c, autumn_c, _Autumn);//c.rgb;//lerp(c, _SnowCol.rgb, snow_samp);
 
             // Metallic and smoothness come from slider variables
             o.Metallic = _Metallic;
