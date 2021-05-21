@@ -101,6 +101,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _Autumn: 1
+    - _AutumnHueInfluence: 0.35
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _Debug: 0
@@ -135,6 +136,7 @@ Material:
     - _SpecularGloss: 0.2
     - _SpecularHighlights: 1
     - _SpecularIntensity: 0.2
+    - _SpringHueInfluence: 0.367
     - _SrcBlend: 1
     - _Strength: 0.1
     - _UVSec: 0
@@ -156,5 +158,7 @@ Material:
     - _RimTint: {r: 0.0036044938, g: 0.5902472, b: 0.764151, a: 0}
     - _SnowCol: {r: 1, g: 1, b: 1, a: 1}
     - _Spec_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _SpringCol1: {r: 0.07330296, g: 0.24528301, b: 0, a: 1}
+    - _SpringCol2: {r: 0.048055317, g: 0.735849, b: 0, a: 1}
     - _Tint: {r: 0.62264144, g: 0.62264144, b: 0.62264144, a: 0}
   m_BuildTextureStacks: []

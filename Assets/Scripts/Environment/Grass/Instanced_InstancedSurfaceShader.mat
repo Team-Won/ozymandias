@@ -39,6 +39,6 @@ Material:
     - _WindSpeed: 0.1
     - _WindStrength: 0.1
     m_Colors:
-    - _Color: {r: 0.77254903, g: 0.5176471, b: 0, a: 1}
-    - _TipColor: {r: 0.5471698, g: 0.5471698, b: 0.5471698, a: 1}
+    - _Color: {r: 0.7058824, g: 0.53333336, b: 0, a: 1}
+    - _TipColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
   m_BuildTextureStacks: []
