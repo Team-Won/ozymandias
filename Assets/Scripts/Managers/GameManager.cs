@@ -35,7 +35,7 @@ namespace Managers
             }
         }
 
-        public bool IsLoading { get; private set; }
+        public static bool IsLoading { get; private set; }
         public bool IsGameOver { get; private set; }
         
         // All Managers/ Universal Controllers
@@ -88,7 +88,7 @@ namespace Managers
             return mod * Buildings.GetStat(stat) + ModifiersTotal[stat] + foodMod;
         }
 
-        public int GetSatisfaction(AdventurerCategory category)
+        private int GetSatisfaction(AdventurerCategory category)
         {
             return GetStat((Stat)category) - Adventurers.GetCount(category);
         }
@@ -148,11 +148,6 @@ namespace Managers
         [Button("Next Turn")]
         public void NextTurn()
         {
-            if (TurnCounter == 15)
-            {
-                signoffScreen.GetComponent<Letter>().Open();
-                return;
-            }
             OnNextTurn?.Invoke();
         }
 
@@ -206,12 +201,8 @@ namespace Managers
         private async void Load()
         {
             IsLoading = true;
-            loadingScreen.enabled = true;
             await SaveFile.LoadState();
-            loadingScreen.enabled = false;
-            signoffScreen.enabled = true;
             UpdateUi();
-            
             IsLoading = false;
         }
 

@@ -1,36 +1,33 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Controllers;
 using TMPro;
+using UI;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 namespace Managers
 {
     public class Settings : MonoBehaviour
     {
-        //We need each object so that we can update their appearance to reflect player prefs
-        //loading
-        public GameObject loadingScreen;
-        public Slider progressBar;
-        public TextMeshProUGUI tipText, versionText;
-        public string[] loadingTips;
+        public GameObject loadingScreenPrefab;
+        
+        // Misc
+        public TextMeshProUGUI versionText;
 
-        //resolution selection
+        // Resolution selection
         public TMP_Dropdown resolutionDropdown;
         private Resolution[] _resolutions;
 
-        //audio
+        // Audio
         public AudioMixer audioMixer;
         public Slider musicSlider;
         public Slider ambienceSlider;
         public Slider sfxSlider;
 
-        //fullscreen
+        // Fullscreen
         public Toggle fullscreenToggle;
         public Toggle shadowToggle;
     
@@ -95,28 +92,17 @@ namespace Managers
 
         public void NewGame()
         {
-            StartCoroutine(LoadAsyncOperation());
+            var loadingScreen = Instantiate(loadingScreenPrefab).GetComponent<LoadingScreen>();
+            loadingScreen.LoadMain();
             StartCoroutine(Jukebox.Instance.FadeTo(
                 Jukebox.MusicVolume, Jukebox.LowestVolume, 1f));
             StartCoroutine(Jukebox.DelayCall(2f, ()=>menuMusic.Stop()));
         }
 
-        IEnumerator LoadAsyncOperation()
-        {
-            tipText.text = loadingTips[Random.Range(0, loadingTips.Length)];
-            loadingScreen.SetActive(true);
-            AsyncOperation gameLevel = SceneManager.LoadSceneAsync("Main");
-            while (!gameLevel.isDone)
-            {
-                float progress = Mathf.Clamp01((gameLevel.progress+0.05f) / 0.9f);
-                progressBar.value = progress;
-                yield return null;
-            }
-        }
-
         public void QuitToMenu()
         {
-            SceneManager.LoadScene("Menu");
+            var loadingScreen = Instantiate(loadingScreenPrefab).GetComponent<LoadingScreen>();
+            loadingScreen.LoadMenu();
         }
 
         public void ExitGame()

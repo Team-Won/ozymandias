@@ -148,8 +148,7 @@ namespace Controllers
         
         private void LeftClick()
         {
-            if (Click.PlacingBuilding)
-                return;
+            if (Click.PlacingBuilding) return;
 
             // Make sure that we don't bring up the button if we click on a UI element. 
             if (IsSelectionDisabled()) return;
@@ -159,7 +158,7 @@ namespace Controllers
                 DeselectBuilding();
                 return;
             }
-            
+
             SelectedBuilding = SelectHoveredBuilding();
         }
 
